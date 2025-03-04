@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #4A90E2, #8E44AD);
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Email Input Box Styling */
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4A90E2;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        .error {
+            border-color: #e74c3c;
+            background-color: #f9d6d5;
+        }
+
+        /* OTP Box Styling */
+        .otp-box {
+            display: flex;
+            justify-content: center;
+            gap: 5px; /* Reduced gap between OTP fields */
+        }
+
+        .otp-input {
+            width: 30px;  /* Smaller width */
+            height: 30px; /* Smaller height */
+            text-align: center;
+            font-size: 18px; /* Smaller font size */
+            border: 2px solid #4A90E2;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .otp-input:focus {
+            border-color: #8E44AD;
+        }
+
+        button {
+            background: #4A90E2;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #357ABD;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="emailForm">
+        <h2>Verify Your Email</h2>
+        <input type="email" id="emailInput" placeholder="Enter your Gmail" required>
+        <button id="emailSubmit">Get OTP</button>
+    </div>
+
+    <div class="container hidden" id="otpForm">
+        <h2>Enter OTP</h2>
+        <div class="otp-box">
+            <input type="text" class="otp-input" maxlength="1" id="otp1">
+            <input type="text" class="otp-input" maxlength="1" id="otp2">
+            <input type="text" class="otp-input" maxlength="1" id="otp3">
+            <input type="text" class="otp-input" maxlength="1" id="otp4">
+            <input type="text" class="otp-input" maxlength="1" id="otp5">
+            <input type="text" class="otp-input" maxlength="1" id="otp6">
+        </div>
+        <button id="otpSubmit" class="inactive">Verify OTP</button>
+    </div>
+
+    <script>
+        let generatedOTP = "";
+        
+        function generateOTP() {
+            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            alert(`Your OTP is: ${generatedOTP}`); // Replace with actual email sending logic
+        }
+
+        function checkOTP() {
+            let enteredOTP = '';
+            document.querySelectorAll('.otp-input').forEach(input => enteredOTP += input.value);
+
+            const submitButton = document.getElementById('otpSubmit');
+            if (enteredOTP.length === 6) {
+                submitButton.classList.add('active');
+                submitButton.classList.remove('inactive');
+            } else {
+                submitButton.classList.remove('active');
+                submitButton.classList.add('inactive');
+            }
+        }
+
+        document.getElementById('emailSubmit').addEventListener('click', () => {
+            const email = document.getElementById('emailInput').value;
+            const emailInput = document.getElementById('emailInput');
+
+            // Clear error state
+            emailInput.classList.remove('error');
+
+            // Basic email validation
+            if (!email.endsWith('@gmail.com') || !email.includes('@')) {
+                emailInput.classList.add('error');
+                alert('Please enter a valid Gmail address');
+                return;
+            }
+
+            generateOTP();
+            document.getElementById('emailForm').classList.add('hidden');
+            document.getElementById('otpForm').classList.remove('hidden');
+        });
+
+        document.querySelectorAll('.otp-input').forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value.length == 1 && index < 5) {
+                    document.getElementById(`otp${index + 2}`).focus(); // Move to next input
+                }
+                checkOTP();
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && index > 0 && this.value.length == 0) {
+                    document.getElementById(`otp${index}`).focus(); // Move to previous input if backspace
+                }
+            });
+        });
+
+        document.getElementById('otpSubmit').addEventListener('click', () => {
+            let enteredOTP = '';
+            document.querySelectorAll('.otp-input').forEach(input => enteredOTP += input.value);
+
+            if (enteredOTP === generatedOTP) {
+                alert('✅ Email verified successfully!');
+                window.location.href = "basic_details.html"; // Redirect to next page
+            } else {
+                alert('❌ Incorrect OTP. Please try again.');
+            }
+        });
+    </script>
+
+</body>
+</html>

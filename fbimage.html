@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            background: #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            color: white;
+        }
+        .upload-section {
+            margin-bottom: 15px;
+        }
+        #preview {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #145523;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Please Upload Two Images of the Item</h2>
+        <div class="upload-section">
+            <label>Upload Front Image:</label>
+            <input type="file" id="imageInput1" accept="image/*">
+        </div>
+        <div class="upload-section">
+            <label>Upload Back Image:</label>
+            <input type="file" id="imageInput2" accept="image/*">
+        </div>
+        <div id="preview"></div>
+        <br>
+        <button id="submitBtn" disabled>Submit</button>
+        <p id="confirmationMessage" style="display:none; color: white; margin-top: 10px;">Our agent will come to your doorstep, analyze the item, collect it, and decide the price.</p>
+    </div>
+
+    <script>
+        const imageInput1 = document.getElementById('imageInput1');
+        const imageInput2 = document.getElementById('imageInput2');
+        const preview = document.getElementById('preview');
+        const submitBtn = document.getElementById('submitBtn');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+
+        function updatePreview(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.dataset.input = input.id;
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function checkSubmit() {
+            if (imageInput1.files.length > 0 && imageInput2.files.length > 0) {
+                submitBtn.disabled = false;
+            } else {
+                submitBtn.disabled = true;
+            }
+        }
+
+        submitBtn.addEventListener('click', function() {
+            confirmationMessage.style.display = 'block';
+        });
+
+        imageInput1.addEventListener('change', function() {
+            updatePreview(this);
+            checkSubmit();
+        });
+
+        imageInput2.addEventListener('change', function() {
+            updatePreview(this);
+            checkSubmit();
+        });
+    </script>
+</body>
+</html>

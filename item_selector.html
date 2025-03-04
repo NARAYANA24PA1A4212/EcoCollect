@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Electronic Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .item img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+        .sell-btn {
+            padding: 5px 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        function sellItem(itemName) {
+            alert("You have selected to sell: " + itemName);
+            window.location.href = "fbimage.html"; // Redirect to the image upload page
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Select the item you want to sell</h2>
+        
+        <div class="item">
+            <img src="Circuit Board.jpg" alt="Circuit Board">
+            <span>Circuit Board</span>
+            <button class="sell-btn" onclick="sellItem('Circuit Board')">Sell</button>
+        </div>
+        
+        <div class="item">
+            <img src="Laptop.jpg" alt="Laptop">
+            <span>Laptop</span>
+            <button class="sell-btn" onclick="sellItem('Laptop')">Sell</button>
+        </div>
+        
+        <div class="item">
+            <img src="Mobile Phone.jpg" alt="Mobile Phone">
+            <span>Mobile Phone</span>
+            <button class="sell-btn" onclick="sellItem('Mobile Phone')">Sell</button>
+        </div>
+        
+        <div class="item">
+            <img src="Printer.jpg" alt="Printer">
+            <span>Printer</span>
+            <button class="sell-btn" onclick="sellItem('Printer')">Sell</button>
+        </div>
+        
+        <div class="item">
+            <img src="Speaker.jpg" alt="Speaker">
+            <span>Speaker</span>
+            <button class="sell-btn" onclick="sellItem('Speaker')">Sell</button>
+        </div>
+        
+        <div class="item">
+            <span>Others</span>
+            <input type="text" id="otherItem" placeholder="Enter item name">
+            <button class="sell-btn" onclick="sellItem(document.getElementById('otherItem').value)">Sell</button>
+        </div>
+    </div>
+</body>
+</html>
